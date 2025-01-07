@@ -1,17 +1,21 @@
-# Базовый образ
+# Используем официальный Python образ
 FROM python:3.9-slim
 
-# Устанавливаем рабочую директорию
+# Устанавливаем рабочую директорию внутри контейнера
 WORKDIR /app
 
-# Копируем файл requirements.txt в контейнер
+# Копируем файл зависимостей (requirements.txt) в контейнер
 COPY requirements.txt /app/
 
 # Устанавливаем зависимости
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Копируем исходные файлы
-COPY src /app
+# Копируем исходный код в контейнер
+COPY src /app/src
 
-# Запускаем сервис
-CMD ["python", "model.py"]
+# Устанавливаем переменные окружения для логирования
+ENV PYTHONUNBUFFERED=1
+
+# Команда по умолчанию для запуска вашего приложения
+CMD ["python", "src/model.py"]
+
