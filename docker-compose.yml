@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  features:
+    build:
+      context: ./features
+    volumes:
+      - ./logs:/app/logs
+    depends_on:
+      - rabbitmq
+
+  model:
+    build:
+      context: ./model
+    volumes:
+      - ./logs:/app/logs
+    depends_on:
+      - rabbitmq
+
+  metric:
+    build:
+      context: ./metric
+    volumes:
+      - ./logs:/app/logs
+    depends_on:
+      - rabbitmq
+
+  plot:
+    build:
+      context: ./plot
+    volumes:
+      - ./logs:/app/logs
+    depends_on:
+      - metric
+
+  rabbitmq:
+    image: "rabbitmq:management"
+    ports:
+      - "15672:15672"  # Web UI
+      - "5672:5672"    # AMQP
